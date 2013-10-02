@@ -1,60 +1,15 @@
 use warnings;
 use strict;
-
 package Mixin::ExtraFields::Param;
-use base qw(Mixin::ExtraFields);
+{
+  $Mixin::ExtraFields::Param::VERSION = '0.001';
+}
+use Mixin::ExtraFields 0.002 ();
+use parent qw(Mixin::ExtraFields);
+# ABSTRACT: make your class provide a familiar "param" method
 
 use Carp ();
 
-=head1 NAME
-
-Mixin::ExtraFields::Param - make your class provide a familiar "param" method
-
-=head1 VERSION
-
-version 0.011
-
- $Id: /my/cs/projects/Mixin-ExtraFields-Param/trunk/lib/Mixin/ExtraFields/Param.pm 29059 2006-12-11T03:20:29.045283Z rjbs  $
-
-=cut
-
-our $VERSION = '0.011';
-
-=head1 SYNOPSIS
-
-  package Widget::Parametric;
-  use Mixin::ExtraFields::Param -fields => { driver => 'HashGuts' };;
-
-  ...
-
-  my $widget = Widget::Parametric->new({ flavor => 'vanilla' });
-
-  printf "%s: %s\n", $_, $widget->param($_) for $widget->param;
-
-=head1 DESCRIPTION
-
-This module mixes in to your class to provide a C<param> method like the ones
-provided by L<CGI>, L<CGI::Application>, and other classes.  It uses
-Mixin::ExtraFields, which means it can use any Mixin::ExtraFields driver to
-store your data.
-
-By default, the methods provided are:
-
-=over
-
-=item * param
-
-=item * exists_param
-
-=item * delete_param
-
-=back
-
-These methods are imported by the C<fields> group, which must be requested.  If
-a C<moniker> argument is supplied, the moniker is used instead of "param".  For
-more information, see L<Mixin::ExtraFields>.
-
-=cut
 
 sub default_moniker { 'param' }
 
@@ -69,28 +24,11 @@ sub method_name {
 
 sub build_method {
   my ($self, $method_name, $arg) = @_;
-  
+
   return $self->_build_param_method($arg) if $method_name eq 'param';
   return $self->SUPER::build_method($method_name, $arg);
 }
 
-=head1 METHODS
-
-=cut
-
-=head2 param
-
- my @params = $object->param;        # get names of existing params
-
- my $value = $object->param('name'); # get value of a param
-
- my $value = $object->param(name => $value); # set a param's value
-
- my @values = $object->param(n1 => $v1, n2 => $v2, ...); # set many values
-
-This method sets or retrieves parameters.
-
-=cut
 
 sub _build_param_method {
   my ($self, $arg) = @_;
@@ -113,7 +51,7 @@ sub _build_param_method {
     # future, we might want to complain if we get a hashref /and/ further
     # arguments.
     @_ = %{$_[0]} if @_ == 1 and ref $_[0] eq 'HASH';
-    
+
     Carp::croak "invalid call to param: odd, non-one number of params"
       if @_ > 1 and @_ % 2 == 1;
 
@@ -133,23 +71,83 @@ sub _build_param_method {
   };
 }
 
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Mixin::ExtraFields::Param - make your class provide a familiar "param" method
+
+=head1 VERSION
+
+version 0.001
+
+=head1 SYNOPSIS
+
+  package Widget::Parametric;
+  use Mixin::ExtraFields::Param -fields => { driver => 'HashGuts' };;
+
+  ...
+
+  my $widget = Widget::Parametric->new({ flavor => 'vanilla' });
+
+  printf "%s: %s\n", $_, $widget->param($_) for $widget->param;
+
+=head1 DESCRIPTION
+
+This module mixes in to your class to provide a C<param> method like the ones
+provided by L<CGI>, L<CGI::Application>, and other classes.  It uses
+Mixin::ExtraFields, which means it can use any Mixin::ExtraFields driver to
+store your data.
+
+By default, the methods provided are:
+
+=over 4
+
+=item *
+
+param
+
+=item *
+
+exists_param
+
+=item *
+
+delete_param
+
+=back
+
+These methods are imported by the C<fields> group, which must be requested.  If
+a C<moniker> argument is supplied, the moniker is used instead of "param".  For
+more information, see L<Mixin::ExtraFields>.
+
+=head1 METHODS
+
+=head2 param
+
+ my @params = $object->param;        # get names of existing params
+
+ my $value = $object->param('name'); # get value of a param
+
+ my $value = $object->param(name => $value); # set a param's value
+
+ my @values = $object->param(n1 => $v1, n2 => $v2, ...); # set many values
+
+This method sets or retrieves parameters.
+
 =head1 AUTHOR
 
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
+Ricardo SIGNES <rjbs@cpan.org>
 
-=head1 BUGS
+=head1 COPYRIGHT AND LICENSE
 
-Please report any bugs or feature requests to L<http://rt.cpan.org>, for
-Mixin-ExtraFields-Param.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
+This software is copyright (c) 2005 by Ricardo SIGNES.
 
-=head1 COPYRIGHT
-
-Copyright 2005-2006 Ricardo Signes, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-1;

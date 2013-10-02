@@ -1,18 +1,13 @@
-Mixin::Param - make your class provide a familiar "param" method
 
-SYNOPSIS
 
-  package Widget::Parametric;
-  use Mixin::Param;
+This archive contains the distribution Mixin-ExtraFields-Param,
+version 0.001:
 
-  ...
+  make your class provide a familiar "param" method
 
-  my $widget = Widget::Parametric->new({ flavor => 'vanilla' });
+This software is copyright (c) 2005 by Ricardo SIGNES.
 
-  printf "%s: %s\n", $_, $widget->param($_) for $widget->param;
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
-DESCRIPTION
-
-This module mixes in to your class to provide a C<param> method like the ones
-provided by L<CGI>, L<CGI::Application>, and other classes.
 
