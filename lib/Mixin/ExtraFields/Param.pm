@@ -2,7 +2,7 @@ use warnings;
 use strict;
 package Mixin::ExtraFields::Param;
 {
-  $Mixin::ExtraFields::Param::VERSION = '0.001';
+  $Mixin::ExtraFields::Param::VERSION = '0.020';
 }
 use Mixin::ExtraFields 0.002 ();
 use parent qw(Mixin::ExtraFields);
@@ -83,7 +83,7 @@ Mixin::ExtraFields::Param - make your class provide a familiar "param" method
 
 =head1 VERSION
 
-version 0.001
+version 0.020
 
 =head1 SYNOPSIS
 
